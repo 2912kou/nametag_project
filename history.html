@@ -15,6 +15,14 @@
 
     <h1>出席履歴</h1>
 
+    <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
+        <h2>Google Chat 通知</h2>
+        <p style="font-size: 14px; color: #555;">Webhook URLを保存すると、出席記録時に自動で通知が送信されます。</p>
+        <input type="text" id="webhookUrl" placeholder="https://chat.googleapis.com/v1/spaces/.../messages?key=..." style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
+        <button onclick="saveWebhookUrl()" style="background: #28a745; color: white; margin-bottom: 5px;">URLを保存</button>
+        <button onclick="sendToGoogleChat()" style="background: #007bff; color: white;">現在の履歴を一括送信</button>
+    </div>
+
     <button onclick="clearHistory()">
         履歴を全削除
     </button>
