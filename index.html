@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生徒名札所持判定システム</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --status-green: #d4edda;
+            --status-yellow: #fff3cd;
+            --status-red: #f8d7da;
+            --text-green: #155724;
+            --text-yellow: #856404;
+            --text-red: #721c24;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+        }
+        .video-box, .result-box {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+        #webcam-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            transform: scaleX(-1); /* 鏡像表示 */
+        }
+        #webcam-container canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+        .result-content {
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #result-display {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #status-display {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        #score-display {
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        .btn-start {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .btn-start:hover {
+            background-color: #0056b3;
+        }
+        #loading {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>生徒名札所持判定システム (v4.0)</h1>
+
+    <div class="container">
+        <!-- 左側：カメラ映像 -->
+        <div class="video-box">
+            <div id="loading" style="display:none;">モデルを読み込んでいます...</div>
+            <button class="btn-start" id="start-btn" onclick="init()">カメラ起動・判定開始</button>
+            <div id="webcam-container"></div>
+        </div>
+
+        <!-- 右側：判定結果表示 -->
+        <div class="result-box">
+            <div class="result-content" id="result-card">
+                <div id="status-display">カメラ未起動</div>
+                <div id="result-display">-</div>
+                <div id="score-display">信頼度: --%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TensorFlow.js と Teachable Machine ライブラリの読み込み -->
+    <script src="https://jsdelivr.net"></script>
+    <script src="https://jsdelivr.net"></script>
+
+    <script type="text/javascript">
+        // -------------------------------------------------------------
+        // 設定項目 (Step 3で書き換えたURLをここに貼り付けてください)
+        // -------------------------------------------------------------
+        const URL = "https://withgoogle.com"; 
+
+        // 判定確定の閾値 (要件定義書に基づき初期値は80%)
+        const CONFIDENCE_THRESHOLD = 0.80; 
+
+        let model, webcam, labelContainer, maxPredictions;
+        const resultCard = document.getElementById('result-card');
+        const statusDisplay = document.getElementById('status-display');
+        const resultDisplay = document.getElementById('result-display');
+        const scoreDisplay = document.getElementById('score-display');
+
+        // システム初期化と起動
+        async function init() {
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            try {
+                // AIモデルの読み込み
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+
+                // カメラの設定 (720p推奨に基づき横1280x縦720を設定、非対応時は自動フォールバック)
+                const flip = true; 
+                webcam = new tmImage.Webcam(1280, 720, flip); 
+                await webcam.setup(); 
+                await webcam.play();
+                
+                document.getElementById('loading').style.display = 'none';
+                window.requestAnimationFrame(loop);
+
+                // カメラ映像を画面に追加
+                document.getElementById("webcam-container").appendChild(webcam.canvas);
+            } catch (error) {
+                alert("カメラの起動、またはモデルの読み込みに失敗しました。URLを確認してください。");
+                document.getElementById('start-btn').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+                console.error(error);
+            }
+        }
+
+        // ループ処理
+        async function loop() {
+            webcam.update(); 
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        // AI判定処理
+        async function predict() {
+            // 最も確率の高いクラス（予測結果）を取得
+            const prediction = await model.predict(webcam.canvas);
+            
+            let highestPred = { className: "", probability: 0 };
+            for (let i = 0; i < maxPredictions; i++) {
+                if (prediction[i].probability > highestPred.probability) {
+                    highestPred = prediction[i];
+                }
+            }
+
+            const className = highestPred.className;
+            const probability = highestPred.probability;
+            const scorePercent = Math.round(probability * 100);
+
+            // -------------------------------------------------------------
+            // 判定ロジック (要件定義書 2.2 / 3.1 に完全準拠)
+            // -------------------------------------------------------------
+            
+            // パターン3：名札なし、または「不明」クラスが最高確率の場合
+            if (className === "不明" || className === "名札なし") {
+                updateUI("❌ 名札なし・要確認", "-", scorePercent, "var(--status-red)", "var(--text-red)", "#f5c6cb");
+            } 
+            // 閾値チェック：最高確率が80%未満の場合
+            else if (probability < CONFIDENCE_THRESHOLD) {
+                // パターン2：名札はあるが誰か特定できない
+                updateUI("⚠️ 名札あり（個人不明）", "不明", scorePercent, "var(--status-yellow)", "var(--text-yellow)", "#ffeeba");
+            } 
+            // パターン1：個人の名札を正しく認識（80%以上）
+            else {
+                updateUI("✅ " + className + " 名札あり", className, scorePercent, "var(--status-green)", "var(--text-green)", "#c3e6cb");
+            }
+        }
+
+        // 画面表示と背景色を一括更新する関数
+        function updateUI(statusText, resultText, score, bgColor, textColor, borderColor) {
+            statusDisplay.innerText = statusText;
+            resultDisplay.innerText = resultText;
+            scoreDisplay.innerText = `信頼度: ${score}%`;
+            
+            resultCard.style.backgroundColor = bgColor;
+            resultCard.style.color = textColor;
+            resultCard.style.border = `2px solid ${borderColor}`;
+            document.body.style.backgroundColor = bgColor; // 視覚的通知のため全体の背景も連動
+        }
+    </script>
+</body>
+</html>
