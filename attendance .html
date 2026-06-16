@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>出席判定</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+<style>
+#camera{
+    margin:20px 0;
+}
+
+#result-box{
+    padding:20px;
+    border-radius:10px;
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    margin:20px 0;
+}
+
+.ok{
+    background:#28a745;
+    color:white;
+}
+
+.ng{
+    background:#dc3545;
+    color:white;
+}
+
+.warn{
+    background:#ffc107;
+    color:black;
+}
+
+.wait{
+    background:#6c757d;
+    color:white;
+}
+
+#student-info{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 0 5px rgba(0,0,0,0.2);
+}
+
+#score{
+    margin-top:15px;
+    font-size:18px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>出席判定</h1>
+
+<p>
+現在のモデル
+</p>
+
+<div id="current-model">
+未設定
+</div>
+
+<br>
+
+<button onclick="startAttendance()">
+出席判定開始
+</button>
+
+<div id="camera"></div>
+
+<div id="result-box" class="wait">
+待機中...
+</div>
+
+<div id="student-info">
+
+<p>学年：<span id="grade-view">-</span></p>
+
+<p>クラス：<span id="class-view">-</span></p>
+
+<p>出席番号：<span id="number-view">-</span></p>
+
+<p>氏名：<span id="name-view">-</span></p>
+
+</div>
+
+<div id="score">
+
+上位候補表示
+
+</div>
+
+<br>
+
+<a href="index.html">
+ホームへ戻る
+</a>
+
+</div>
+
+<script src="script.js?v=4"></script>
+
+</body>
+</html>

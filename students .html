@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>出席簿管理</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>出席簿管理</h1>
+
+<p>
+学年
+<select id="grade">
+    <option value="1">1年</option>
+    <option value="2">2年</option>
+    <option value="3">3年</option>
+</select>
+</p>
+
+<p>
+クラス
+<select id="class">
+    <option value="A">A組</option>
+    <option value="B">B組</option>
+    <option value="C">C組</option>
+</select>
+</p>
+
+<p>
+出席番号
+<input type="number" id="number">
+</p>
+
+<p>
+氏名
+<input type="text" id="name">
+</p>
+
+<button onclick="addStudent()">
+登録
+</button>
+
+<hr>
+
+<h2>登録済み生徒</h2>
+
+<div id="student-list"></div>
+
+<p>
+<a href="index.html">ホームへ戻る</a>
+</p>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
