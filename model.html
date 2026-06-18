@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIモデル管理</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>AIモデル管理</h1>
+
+    <div class="card left-align">
+
+        <h2>モデル作成</h2>
+
+        <p style="color: #666; margin-bottom: 15px;">
+            Teachable MachineでAIモデルを作成します
+        </p>
+
+        <button onclick="openTeachableMachine()" class="btn-primary">
+            Teachable Machineを開く
+        </button>
+
+    </div>
+
+    <div class="card left-align">
+
+        <h2>モデルURL登録</h2>
+
+        <p style="color: #666; margin-bottom: 15px;">
+            学習後に取得したURLを貼り付けてください
+        </p>
+
+        <input
+            type="text"
+            id="modelUrl"
+            placeholder="https://teachablemachine.withgoogle.com/models/xxxx/"
+        >
+
+        <button onclick="saveModelUrl()" class="btn-success">
+            保存
+        </button>
+
+    </div>
+
+    <div class="card left-align">
+
+        <h2>現在のモデル</h2>
+
+        <div id="current-model" style="font-weight: bold; color: #3498db;">
+            未設定
+        </div>
+
+    </div>
+
+    <div class="card left-align">
+
+        <h2>使い方</h2>
+
+        <ol class="step-list">
+            <li>Teachable Machineを開く</li>
+            <li>名札画像を登録する</li>
+            <li>モデルを学習する</li>
+            <li>共有リンクを取得する</li>
+            <li>上の入力欄へ貼り付ける</li>
+            <li>保存ボタンを押す</li>
+        </ol>
+
+    </div>
+
+    <div class="back-link-container">
+        <a href="index.html" class="btn btn-outline">ホームへ戻る</a>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

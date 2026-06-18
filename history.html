@@ -15,32 +15,94 @@
 
     <h1>出席履歴</h1>
 
-    <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 0 5px rgba(0,0,0,0.2);">
-        <h2>Google Chat 通知</h2>
-        <p style="font-size: 14px; color: #555;">Webhook URLを保存すると、出席記録時に自動で通知が送信されます。</p>
-        <input type="text" id="webhookUrl" placeholder="https://chat.googleapis.com/v1/spaces/.../messages?key=..." style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;">
-        <button onclick="saveWebhookUrl()" style="background: #28a745; color: white; margin-bottom: 5px;">URLを保存</button>
-        <button onclick="sendToGoogleChat()" style="background: #007bff; color: white;">現在の履歴を一括送信</button>
+    <div class="card left-align">
+        <h2>Google Chat 通知設定</h2>
+        <p style="color: #666; margin-bottom: 15px;">Webhook URLを保存すると、出席記録時に自動で通知が送信されます。</p>
+        <input type="text" id="webhookUrl" placeholder="https://chat.googleapis.com/v1/spaces/.../messages?key=...">
+        <div>
+            <button onclick="saveWebhookUrl()" class="btn-success">URLを保存</button>
+            <button onclick="sendToGoogleChat()" class="btn-primary">現在の履歴を一括送信</button>
+        </div>
     </div>
 
-    <button onclick="clearHistory()">
-        履歴を全削除
-    </button>
-
-    <hr>
-
-    <div id="history-list">
+    <div class="card left-align">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0; border: none;">記録データ</h2>
+            <button onclick="clearHistory()" class="btn-danger" style="margin: 0;">履歴を全削除</button>
+        </div>
+        <div id="history-list" style="min-height: 50px;"></div>
     </div>
 
-    <br>
-
-    <a href="index.html">
-        ホームへ戻る
-    </a>
+    <div class="back-link-container">
+        <a href="index.html" class="btn btn-outline">ホームへ戻る</a>
+    </div>
 
 </div>
 
 <script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUrl = localStorage.getItem('googleChatWebhookUrl');
+    if (savedUrl) {
+        document.getElementById('webhookUrl').value = savedUrl;
+    }
+});
+
+function saveWebhookUrl() {
+    const webhookUrl = document.getElementById('webhookUrl').value.trim();
+    if (webhookUrl) {
+        localStorage.setItem('googleChatWebhookUrl', webhookUrl);
+        alert('Webhook URLを保存しました。以降、出席記録時に自動で通知されます。');
+    } else {
+        localStorage.removeItem('googleChatWebhookUrl');
+        alert('Webhook URLの設定を解除しました。');
+    }
+}
+
+function sendToGoogleChat() {
+    const webhookUrl = document.getElementById('webhookUrl').value;
+    if (!webhookUrl) {
+        alert('Webhook URLを入力してください。');
+        return;
+    }
+
+    // 今日の日付を取得してフィルタリング
+    const today = new Date().toLocaleDateString("ja-JP");
+    const todayRecords = attendanceHistory.filter(record => record.date === today);
+
+    let messageText = '';
+    if (todayRecords.length === 0) {
+        messageText = `本日（${today}）の出席者はありません。`;
+    } else {
+        const names = todayRecords.map(record => `・${record.name}`).join('\n');
+        messageText = `【本日の出席者】\n${names}\n\n合計人数：${todayRecords.length}名`;
+    }
+
+    // Google Chat送信用データ
+    const payload = {
+        text: messageText
+    };
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Google Chatへ通知を送信しました。');
+        } else {
+            alert('通知の送信に失敗しました。HTTPステータス: ' + response.status);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('通信エラーが発生しました。URLが正しいか確認してください。');
+    });
+}
+</script>
 
 </body>
 </html>
