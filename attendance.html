@@ -11,6 +11,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
+ 
+
 <style>
 #camera{
     margin:20px 0;
@@ -58,6 +60,7 @@
 }
 </style>
 
+
 </head>
 
 <body>
@@ -66,53 +69,49 @@
 
 <h1>出席判定</h1>
 
-<p>
-現在のモデル
-</p>
 
-<div id="current-model">
-未設定
+<div class="card left-align">
+    <h2>カメラ設定</h2>
+    <p style="color: #666;">現在のモデル: <span id="current-model" style="font-weight: bold; color: #3498db;">未設定</span></p>
+    <button onclick="startAttendance()" class="btn-primary">
+        出席判定開始
+    </button>
+    <div id="camera"></div>
 </div>
 
-<br>
-
-<button onclick="startAttendance()">
-出席判定開始
-</button>
-
-<div id="camera"></div>
-
-<div id="result-box" class="wait">
-待機中...
+<div class="card">
+    <div id="result-box" class="wait">
+        待機中...
+    </div>
 </div>
 
-<div id="student-info">
-
-<p>学年：<span id="grade-view">-</span></p>
-
-<p>クラス：<span id="class-view">-</span></p>
-
-<p>出席番号：<span id="number-view">-</span></p>
-
-<p>氏名：<span id="name-view">-</span></p>
-
+<div class="card left-align">
+    <h2>判定結果</h2>
+    <div class="info-grid">
+        <p>学年<span id="grade-view" class="badge">-</span></p>
+        <p>クラス<span id="class-view" class="badge">-</span></p>
+        <p>出席番号<span id="number-view" class="badge">-</span></p>
+        <p>氏名<span id="name-view" class="badge">-</span></p>
+    </div>
 </div>
 
-<div id="score">
-
-上位候補表示
-
+<div class="card left-align">
+    <h2>上位候補</h2>
+    <div id="score" style="background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #e2e8f0; color:#475569;">
+        <!-- 候補がここに表示されます -->
+    </div>
 </div>
 
-<br>
-
-<a href="index.html">
-ホームへ戻る
-</a>
+<div class="back-link-container">
+    <a href="index.html" class="btn btn-outline">ホームへ戻る</a>
+</div>
 
 </div>
 
-<script src="script.js?v=4"></script>
+<script src="script.js"></script>
+
+
+
 
 </body>
 </html>

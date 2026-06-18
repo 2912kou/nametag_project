@@ -1,3 +1,4 @@
+
 // ==========================================
 // 1. 状態管理（データ初期化）
 // ==========================================
@@ -45,9 +46,11 @@ function addStudent() {
     const name = nameElement.value.trim();
 
     if (number === "" || name === "") {
+
         alert("入力してください");
         return;
     }
+
 
     const exists = students.some(
         student => student.grade === grade &&
@@ -88,6 +91,7 @@ function displayStudents() {
     if (!list) return;
 
     list.innerHTML = "";
+
 
     [...students]
         .sort((a, b) => {
@@ -206,9 +210,11 @@ function saveHistory() {
 
 function displayHistory() {
     const list = document.getElementById("history-list");
+
     if (!list) return;
 
     list.innerHTML = "";
+
 
     [...attendanceHistory]
         .reverse()
@@ -218,12 +224,14 @@ function displayHistory() {
                     ${record.date} ${record.time}<br>
                     ${record.grade}年 ${record.className}組 ${record.number}番 ${record.name}
                 </p>
+
                 <hr>
             `;
         });
 }
 
 function clearHistory() {
+
     if (!confirm("履歴を削除しますか？")) {
         return;
     }
@@ -247,6 +255,7 @@ function addAttendanceRecord(student) {
     };
 
     attendanceHistory.push(record);
+
     saveHistory();
     displayHistory();
 
@@ -262,6 +271,7 @@ function sendNotificationToGoogleChat(record) {
 
     const messageText = `【出席通知】\n${record.date} ${record.time}\n${record.grade}年 ${record.className}組 ${record.number}番\n${record.name} さんが出席しました。`;
 
+
     fetch(webhookUrl, {
         method: 'POST',
         headers: {
@@ -275,6 +285,7 @@ function sendNotificationToGoogleChat(record) {
         console.error('Google Chat送信エラー:', error);
     });
 }
+
 
 // ==========================================
 // 5. AI出席判定コア機能（3つのインポートデータから完全オフライン起動版）
@@ -417,3 +428,4 @@ function processAttendance(studentName) {
 if (document.getElementById("student-list")) displayStudents();
 if (document.getElementById("local-model-status") || document.getElementById("local-model-time")) displayModelStatus();
 if (document.getElementById("history-list")) displayHistory();
+

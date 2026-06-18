@@ -13,47 +13,53 @@
 
 <h1>出席簿管理</h1>
 
-<p>
-学年
-<select id="grade">
-    <option value="1">1年</option>
-    <option value="2">2年</option>
-    <option value="3">3年</option>
-</select>
-</p>
 
-<p>
-クラス
-<select id="class">
-    <option value="A">A組</option>
-    <option value="B">B組</option>
-    <option value="C">C組</option>
-</select>
-</p>
+<div class="card left-align">
+<h2>生徒登録</h2>
+<div class="form-group">
+    <label>学年</label>
+    <select id="grade">
+        <option value="1">1年</option>
+        <option value="2">2年</option>
+        <option value="3">3年</option>
+    </select>
+</div>
 
-<p>
-出席番号
-<input type="number" id="number">
-</p>
+<div class="form-group">
+    <label>クラス</label>
+    <select id="class">
+        <option value="A">A組</option>
+        <option value="B">B組</option>
+        <option value="C">C組</option>
+    </select>
+</div>
 
-<p>
-氏名
-<input type="text" id="name">
-</p>
+<div class="form-group">
+    <label>出席番号</label>
+    <input type="number" id="number">
+</div>
 
-<button onclick="addStudent()">
+<div class="form-group">
+    <label>氏名</label>
+    <input type="text" id="name">
+</div>
+
+<button onclick="addStudent()" class="btn-primary">
 登録
 </button>
+</div>
 
-<hr>
-
+<div class="card left-align">
 <h2>登録済み生徒</h2>
 
 <div id="student-list"></div>
+</div>
 
-<p>
-<a href="index.html">ホームへ戻る</a>
-</p>
+<div class="back-link-container">
+    <a href="index.html" class="btn btn-outline">ホームへ戻る</a>
+</div>
+
+
 
 </div>
 
