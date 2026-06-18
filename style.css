@@ -1,8 +1,11 @@
 body{
+ 
     font-family: 'Helvetica Neue', Arial, "Yu Gothic", sans-serif;
     background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
     background-attachment: fixed;
     color: #333;
+
+   
     margin:0;
     padding:20px;
 }
@@ -14,6 +17,7 @@ body{
 
 h1{
     text-align:center;
+
     color: transparent;
     background: linear-gradient(135deg, #2c3e50, #3498db);
     -webkit-background-clip: text;
@@ -39,6 +43,7 @@ h2::after {
     height: 4px;
     background: linear-gradient(90deg, #3498db, #2ecc71);
     border-radius: 2px;
+
 }
 
 .menu{
@@ -49,6 +54,7 @@ h2::after {
 }
 
 .card{
+
     background: #ffffff;
     padding: 25px;
     border-radius: 12px;
@@ -60,10 +66,12 @@ h2::after {
     border-top: 5px solid #3498db;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 25px;
+
 }
 
 .card:hover{
     transform:translateY(-3px);
+
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
@@ -290,4 +298,5 @@ button:active, .btn:active { transform: scale(0.98); }
     font-weight: bold;
     font-size: 0.9rem;
     box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+
 }

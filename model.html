@@ -14,68 +14,73 @@
 
     <h1>AIモデル管理</h1>
 
-    <div class="card left-align">
+<div class="card left-align">
 
-        <h2>モデル作成</h2>
+    <h2>モデル作成</h2>
 
-        <p style="color: #666; margin-bottom: 15px;">
-            Teachable MachineでAIモデルを作成します
-        </p>
+    <p style="color: #666; margin-bottom: 15px;">
+        Teachable MachineでAIモデルを作成します
+    </p>
 
-        <button onclick="openTeachableMachine()" class="btn-primary">
-            Teachable Machineを開く
-        </button>
+    <button onclick="openTeachableMachine()" class="btn-primary">
+        Teachable Machineを開く
+    </button>
 
-    </div>
+</div>
 
-    <div class="card left-align">
+<div class="card left-align" id="model-upload-section">
 
-        <h2>モデルURL登録</h2>
+    <h2>最新モデルファイルのインポート</h2>
 
-        <p style="color: #666; margin-bottom: 15px;">
-            学習後に取得したURLを貼り付けてください
-        </p>
+    <p style="font-size:14px; color:#555;">
+        Teachable Machineからダウンロードした
+        <strong>「model.json」「metadata.json」「weights.bin」の3つのファイル</strong>
+        を同時に選択してください。
+    </p>
 
-        <input
-            type="text"
-            id="modelUrl"
-            placeholder="https://teachablemachine.withgoogle.com/models/xxxx/"
-        >
+    <p style="font-size:12px; color:#888;">
+        ※ Ctrlキー（MacはCmdキー）を押しながらクリックすると複数選択できます。
+    </p>
 
-        <button onclick="saveModelUrl()" class="btn-success">
-            保存
-        </button>
+    <input
+        type="file"
+        id="modelFiles"
+        multiple
+        style="padding:10px; margin-bottom:10px; width:90%;"
+    >
 
-    </div>
+    <button onclick="importModelFiles()" class="btn-success">
+        モデルを適用する
+    </button>
 
-    <div class="card left-align">
+    <p style="margin-top:15px; font-weight:bold;">
+        現在の状態：
+        <span id="local-model-status">未読み込み</span>
+    </p>
 
-        <h2>現在のモデル</h2>
+</div>
 
-        <div id="current-model" style="font-weight: bold; color: #3498db;">
-            未設定
-        </div>
+<div class="card left-align">
 
-    </div>
+    <h2>使い方</h2>
 
-    <div class="card left-align">
+    <ol class="step-list">
+        <li>Teachable Machineを開く</li>
+        <li>名札画像を登録する</li>
+        <li>モデルを学習する</li>
+        <li>「モデルのエクスポート」→「ダウンロード」を選択する</li>
+        <li>ZIPファイルを解凍する</li>
+        <li>「model.json」「metadata.json」「weights.bin」を同時に選択する</li>
+        <li>「モデルを適用する」を押す</li>
+    </ol>
 
-        <h2>使い方</h2>
+</div>
 
-        <ol class="step-list">
-            <li>Teachable Machineを開く</li>
-            <li>名札画像を登録する</li>
-            <li>モデルを学習する</li>
-            <li>共有リンクを取得する</li>
-            <li>上の入力欄へ貼り付ける</li>
-            <li>保存ボタンを押す</li>
-        </ol>
-
-    </div>
-
-    <div class="back-link-container">
-        <a href="index.html" class="btn btn-outline">ホームへ戻る</a>
-    </div>
+<div class="back-link-container">
+    <a href="index.html" class="btn btn-outline">
+        ホームへ戻る
+    </a>
+</div>
 
 </div>
 

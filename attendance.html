@@ -11,6 +11,56 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 
+ 
+
+<style>
+#camera{
+    margin:20px 0;
+}
+
+#result-box{
+    padding:20px;
+    border-radius:10px;
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    margin:20px 0;
+}
+
+.ok{
+    background:#28a745;
+    color:white;
+}
+
+.ng{
+    background:#dc3545;
+    color:white;
+}
+
+.warn{
+    background:#ffc107;
+    color:black;
+}
+
+.wait{
+    background:#6c757d;
+    color:white;
+}
+
+#student-info{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 0 5px rgba(0,0,0,0.2);
+}
+
+#score{
+    margin-top:15px;
+    font-size:18px;
+}
+</style>
+
+
 </head>
 
 <body>
@@ -18,6 +68,7 @@
 <div class="container">
 
 <h1>出席判定</h1>
+
 
 <div class="card left-align">
     <h2>カメラ設定</h2>
@@ -58,6 +109,9 @@
 </div>
 
 <script src="script.js"></script>
+
+
+
 
 </body>
 </html>
