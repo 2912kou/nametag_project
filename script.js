@@ -429,3 +429,9 @@ if (document.getElementById("student-list")) displayStudents();
 if (document.getElementById("local-model-status") || document.getElementById("local-model-time")) displayModelStatus();
 if (document.getElementById("history-list")) displayHistory();
 
+function openTeachableMachine() {
+    window.open(
+        "https://teachablemachine.withgoogle.com/train/image",
+        "_blank"
+    );
+}
